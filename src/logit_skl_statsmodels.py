@@ -180,8 +180,8 @@ m1.summary()
 m1.pred_table()
 
 # Calculate log-likelihood manually just for fun
-m1p = np.log(m1Probs)
-m1q = np.log(1 - m1Probs)
+m1p = np.log(m1.predict(diab["Glucose"]))
+m1q = np.log(1 - m1.predict(diab["Glucose"]))
 y = np.array(diab["Outcome"])
 yinv = 1-y
 
@@ -190,6 +190,9 @@ llpt2 = yinv*m1q
 llpt3 = llpt1 + llpt2
 ll = np.sum(llpt3)
 
+# Predicted probability for individual value
+newpred = (pd.DataFrame({"Glucose": [10]}))
+m1.predict(newpred)
 
 # Plot Predicted Probs
 """
@@ -217,7 +220,6 @@ plt.savefig('img/diabetesGlucosePreds.png')
 
 from sklearn.metrics import log_loss
 
-skLogit = LogisticRegression()
 X = diab["Glucose"].to_numpy().reshape(-1, 1)
 m2 = LogisticRegression().fit(X, diab["Outcome"])
 m2.intercept_

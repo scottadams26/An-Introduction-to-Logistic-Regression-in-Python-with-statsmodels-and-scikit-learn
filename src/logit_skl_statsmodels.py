@@ -232,6 +232,7 @@ glucoseNew = np.linspace(X.min(), X.max(), 1000).reshape(-1, 1)
 glucoseNew[m2.predict_proba(glucoseNew)[:, 1] >= 0.5][0]
 
 
-### Confusion matrix
+# Confusion matrix
 from sklearn.metrics import confusion_matrix
 print(confusion_matrix(diab["Outcome"], m2.predict(X)))
+m1.pred_table()  # confusion matrix from statsmodels

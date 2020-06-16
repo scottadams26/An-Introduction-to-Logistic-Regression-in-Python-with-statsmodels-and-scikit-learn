@@ -85,7 +85,7 @@ plt.savefig('img/linearProb.png')
 plt.figure(figsize=(5, 5))
 ax = plt.axes()
 ax.scatter(x, y, color='b', alpha=0.20)
-ax.plot(X_new, y_proba[:, 1], linewidth=3, color='black', alpha=0.7)
+ax.plot(X_new, y_proba[:, 1], color='black', alpha=0.7, linewidth=2)
 ax.set_xlabel('x')
 ax.set_ylabel('Y')
 plt.savefig('img/logitProb.png')
@@ -97,7 +97,7 @@ plt.savefig('img/logitProb.png')
 
 plt.figure(figsize=(5, 5))
 ax = plt.axes()
-ax.plot(X_new, y_logit[:, 1], linewidth=3, color='black', alpha=0.7)
+ax.plot(X_new, y_logit[:, 1], linewidth=2, color='black', alpha=0.7)
 ax.set_xlabel('x')
 ax.set_ylabel('log-odds(Y=1)')
 plt.savefig('img/logitX.png')
@@ -110,7 +110,7 @@ plt.savefig('img/logitX.png')
 # Logit Plot
 plt.figure(figsize=(5, 5))
 ax = plt.axes()
-ax.plot(X_new, y_proba[:, 1], linewidth=4, color='black', alpha=0.8)
+ax.plot(X_new, y_proba[:, 1], linewidth=2, color='black', alpha=0.8)
 
 plt.axhline(0.5, color='black', linestyle='dashed', linewidth=0.75)
 plt.axvline(decision_boundary, color='black', linestyle='dashed', linewidth=0.75)
@@ -123,14 +123,14 @@ plt.plot(
 
 plt.plot(
   x[(y==0) & (x >= decision_boundary)], y[(y==0) & (x >= decision_boundary)],
-  "x",
+  "+",
   color = "red",
   alpha=0.8,
   label="Inaccurate Classification")
 
 plt.plot(
   x[(y==1) & (x < decision_boundary)], y[(y==1) & (x < decision_boundary)],
-  "x",
+  "+",
   color = "red",
   alpha=0.8)
 
@@ -142,9 +142,9 @@ plt.plot(
 ax.set_xlabel('x')
 ax.set_ylabel('Pr(Y=1)')
 plt.text(4.0, 0.77, "True Positives", fontsize=8, color="k", ha="center")
-plt.text(0.7,0.77, "False Negatives", fontsize=8, color="k", ha="center")
-plt.text(4.0, 0.2, "False Positives", fontsize=8, color="k", ha="center")
-plt.text(0.7,0.2, "True Negatives", fontsize=8, color="k", ha="center")
+plt.text(0.6,0.77, "False Negatives", fontsize=8, color="k", ha="center")
+plt.text(4, 0.2, "False Positives", fontsize=8, color="k", ha="center")
+plt.text(0.6,0.2, "True Negatives", fontsize=8, color="k", ha="center")
 ax.legend(loc='lower center', bbox_to_anchor=(0.5, 1.00), shadow=False, ncol=2)
 plt.savefig('img/logitQuad.png')
 
@@ -208,7 +208,7 @@ predProbs = m1.predict(glucoseNew)
 plt.figure(figsize=(5, 5))
 ax = plt.axes()
 ax.scatter(diab["Glucose"], diab["Outcome"], color='b', alpha=0.20)
-ax.scatter(glucoseNew, predProbs , color="black", s=4)
+ax.plot(glucoseNew, predProbs, color='black', alpha=0.7, linewidth=2)
 ax.set_xlabel('Glucose - 44')
 ax.set_ylabel('Pr(Diabetic)')
 plt.savefig('img/diabetesGlucosePreds.png')
@@ -229,12 +229,12 @@ log_loss(diab["Outcome"], m2.predict_proba(X), normalize=False)
 # Compare to m1 coefficients and log-likelihood
 m1.summary()
 
-# Calculte Decision Boundary
-glucoseNew = np.linspace(X.min(), X.max(), 1000).reshape(-1, 1)
-glucoseNew[m2.predict_proba(glucoseNew)[:, 1] >= 0.5][0]
-
+# Obtain decision boundary
+glucoseNewSkl = np.linspace(X.min(), X.max(), 1000).reshape(-1, 1)
+sklDB = glucoseNewSkl[m2.predict_proba(glucoseNew)[:, 1] >= 0.5][0]
 
 # Confusion matrix
 from sklearn.metrics import confusion_matrix
 print(confusion_matrix(diab["Outcome"], m2.predict(X)))
 m1.pred_table()  # confusion matrix from statsmodels
+
